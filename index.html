@@ -312,7 +312,7 @@ footer {
 <div class="controls">
   <p>Tap every diya and bring the city to life!</p>
   <div id="message">The city is waiting for your light...</div>
-  <button onclick="celebrate()">🎆 Celebrate Diwali</button>
+  <button onclick="celebrate(); playMusic()">🎆 Celebrate Diwali</button>
   <button onclick="resetGame()">↻ Restart</button>
 </div>
 
@@ -367,6 +367,13 @@ diyas.forEach(diya => {
     }
   });
 });
+
+function playMusic() {
+  diwaliMusic.currentTime = 0;
+  diwaliMusic.play().catch(() => {
+    message.textContent = "Audio could not play. Please check browser settings 🎵";
+  });
+}
 
 function resetGame() {
   diwaliMusic.pause();
