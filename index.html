@@ -180,6 +180,7 @@ h1 {
 
 .diya {
   cursor: pointer;
+  touch-action: manipulation;
   filter: grayscale(1) brightness(0.4);
   transition: 0.3s;
   user-select: none;
@@ -277,7 +278,8 @@ footer {
   from { transform: scale(0.6); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
-\n
+
+
 /* Hide native audio player */
 audio { display: none !important; }
 </style>
@@ -359,7 +361,8 @@ audio { display: none !important; }
   <div id="message">The city is waiting for your light...</div>
   <button onclick="celebrate(); playMusic()">🎆 Celebrate Diwali</button>
   <button onclick="resetGame()">↻ Restart</button>
-</div>\n
+</div>
+
 <div id="vagmiFinale" style="display:none;">
   <h2>🌟 Wait... our littlest star is still sleeping! 🌟</h2>
   <p>Six family diyas are glowing. Now it's time for our little sparkle!</p>
@@ -543,7 +546,8 @@ function wakeVagmi() {
     }, i * 180);
   }
 }
-\n</script>
+
+</script>
 
 </body>
 </html>
