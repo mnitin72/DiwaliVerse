@@ -320,12 +320,18 @@ footer {
   Made with ❤️ and light · DiwaliVerse
 </footer>
 
+
+<audio id="diwaliMusic" preload="auto">
+  <source src="assets/diwali-song.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 const diyas = document.querySelectorAll(".diya");
 const score = document.getElementById("score");
 const percent = document.getElementById("percent");
 const bar = document.getElementById("bar");
 const message = document.getElementById("message");
+const diwaliMusic = document.getElementById("diwaliMusic");
 
 let lit = 0;
 let finished = false;
@@ -353,12 +359,18 @@ diyas.forEach(diya => {
         .forEach(house => house.classList.add("lit"));
 
       finished = true;
+      diwaliMusic.currentTime = 0;
+      diwaliMusic.play().catch(() => {
+        message.textContent = "Tap Celebrate Diwali to play the song 🎵";
+      });
       celebrate();
     }
   });
 });
 
 function resetGame() {
+  diwaliMusic.pause();
+  diwaliMusic.currentTime = 0;
   lit = 0;
   finished = false;
 
