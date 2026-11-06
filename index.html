@@ -235,7 +235,49 @@ footer {
   font-size: 12px;
   padding: 15px;
 }
-</style>
+
+.diya {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.diya small {
+  font-size: 10px;
+  color: #fff4d0;
+  filter: none;
+}
+
+#vagmiFinale {
+  text-align: center;
+  padding: 20px 15px;
+  margin: 15px auto;
+  max-width: 480px;
+  border: 1px solid #ffd76a70;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #40245b, #6a315c);
+  box-shadow: 0 0 35px #ffb72d25;
+}
+
+#vagmiFinale h2 {
+  color: #ffd76a;
+}
+
+#vagmiMessage {
+  margin-top: 20px;
+  animation: vagmiPop 0.8s ease-out;
+}
+
+#vagmiMessage h1 {
+  font-size: clamp(24px, 7vw, 36px);
+}
+
+@keyframes vagmiPop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+\n</style>
 </head>
 
 <body>
@@ -300,12 +342,12 @@ footer {
   </div>
 
   <div class="diyas">
-    <span class="diya" data-id="0">🪔</span>
-    <span class="diya" data-id="1">🪔</span>
-    <span class="diya" data-id="2">🪔</span>
-    <span class="diya" data-id="3">🪔</span>
-    <span class="diya" data-id="4">🪔</span>
-    <span class="diya" data-id="5">🪔</span>
+    <span class="diya" data-id="0">🪔<small>Nitin</small></span>
+    <span class="diya" data-id="1">🪔<small>Aradhana</small></span>
+    <span class="diya" data-id="2">🪔<small>Mum</small></span>
+    <span class="diya" data-id="3">🪔<small>Papa</small></span>
+    <span class="diya" data-id="4">🪔<small>Rakhi</small></span>
+    <span class="diya" data-id="5">🪔<small>Vivek</small></span>
   </div>
 </div>
 
@@ -314,11 +356,20 @@ footer {
   <div id="message">The city is waiting for your light...</div>
   <button onclick="celebrate(); playMusic()">🎆 Celebrate Diwali</button>
   <button onclick="resetGame()">↻ Restart</button>
-</div>
+</div>\n
+<div id="vagmiFinale" style="display:none;">
+  <h2>🌟 Wait... our littlest star is still sleeping! 🌟</h2>
+  <p>Six family diyas are glowing. Now it's time for our little sparkle!</p>
+  <button onclick="wakeVagmi()">👶 Wake up Vagmi ✨</button>
 
-<footer>
-  Made with ❤️ and light · DiwaliVerse
-</footer>
+  <div id="vagmiMessage" style="display:none;">
+    <h1>🎆 Our Little Diwali Star — Vagmi ❤️</h1>
+    <p>Seven hearts. One family. Endless love.</p>
+    <h2>Happy Diwali 2026 🪔</h2>
+    <p>Nitin · Aradhana · Mum · Papa · Rakhi · Vivek · Vagmi</p>
+  </div>
+</div>
+\n<footer>\n  Made with ❤️ and light · DiwaliVerse\n</footer>
 
 
 <audio id="diwaliMusic" controls preload="auto">
@@ -354,15 +405,18 @@ diyas.forEach(diya => {
     } else if (lit === 4) {
       message.textContent = "The city is coming alive! 🌟";
     } else if (lit === 6) {
-      message.textContent = "You brought the light back! 🪔";
+      message.textContent = "All family diyas are glowing! 🪔 Vagmi's turn!";
       document.querySelectorAll(".house")
         .forEach(house => house.classList.add("lit"));
 
       finished = true;
+      document.getElementById("vagmiFinale").style.display = "block";
+
       diwaliMusic.currentTime = 0;
       diwaliMusic.play().catch(() => {
         message.textContent = "Tap Celebrate Diwali to play the song 🎵";
       });
+
       celebrate();
     }
   });
@@ -466,7 +520,24 @@ function celebrate() {
     }, i * 250);
   }
 }
-</script>
+
+function wakeVagmi() {
+  document.getElementById("vagmiMessage").style.display = "block";
+  message.textContent = "The tiniest sparkle has arrived! ❤️";
+
+  diwaliMusic.currentTime = 0;
+  diwaliMusic.play().catch(() => {});
+
+  for (let i = 0; i < 15; i++) {
+    setTimeout(() => {
+      burst(
+        Math.random() * canvas.width,
+        Math.random() * canvas.height * 0.6
+      );
+    }, i * 180);
+  }
+}
+\n</script>
 
 </body>
 </html>
