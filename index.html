@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#100b25">
+<title>DiwaliVerse | Light Up The City</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+  color: #fff4d0;
+  background: radial-gradient(circle at top, #42215c, #100b25 65%);
+  overflow-x: hidden;
+}
+
+header {
+  text-align: center;
+  padding: 25px 15px 12px;
+}
+
+h1 {
+  margin: 0;
+  color: #ffd76a;
+  font-size: clamp(30px, 8vw, 48px);
+  letter-spacing: 2px;
+  text-shadow: 0 0 25px #ff9d26;
+}
+
+.subtitle {
+  color: #d8c8e9;
+  font-size: 14px;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 15px;
+}
+
+.stat {
+  background: #ffffff12;
+  border: 1px solid #ffffff25;
+  padding: 10px 18px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.stat strong {
+  display: block;
+  color: #ffd76a;
+  font-size: 22px;
+}
+
+.progress {
+  width: 85%;
+  max-width: 400px;
+  margin: 15px auto;
+  height: 8px;
+  background: #ffffff20;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #ff8c32, #ffe77a);
+  transition: width 0.5s;
+}
+
+.city {
+  max-width: 480px;
+  margin: 15px auto;
+  min-height: 350px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 25px;
+  border: 1px solid #ffd76a50;
+  background: linear-gradient(#20143e, #44204f 70%, #21152e);
+  box-shadow: 0 0 40px #ff9d2615;
+}
+
+.moon {
+  position: absolute;
+  top: 25px;
+  right: 35px;
+  font-size: 50px;
+  filter: drop-shadow(0 0 20px #fff1a0);
+}
+
+.stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(#fff 1px, transparent 1px),
+    radial-gradient(#ffd76a 1px, transparent 1px);
+  background-size: 45px 45px, 75px 75px;
+  opacity: 0.4;
+}
+
+.houses {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  width: 100%;
+  gap: 7px;
+  padding: 0 8px;
+}
+
+.house {
+  width: 29%;
+  height: 170px;
+  position: relative;
+  background: #302347;
+  border: 1px solid #8b6a92;
+  border-radius: 7px 7px 0 0;
+  transition: 0.4s;
+}
+
+.house:nth-child(2) {
+  height: 220px;
+}
+
+.house:nth-child(3) {
+  height: 145px;
+}
+
+.roof {
+  position: absolute;
+  top: -35px;
+  left: -8px;
+  width: calc(100% + 16px);
+  height: 40px;
+  background: #6d365d;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.windows {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 25px 12px;
+}
+
+.window {
+  height: 25px;
+  background: #49355a;
+  border: 1px solid #a47ba2;
+  border-radius: 3px;
+}
+
+.lit .window {
+  background: #ffcf54;
+  box-shadow: 0 0 18px #ffb72d;
+}
+
+.lit {
+  background: #54344c;
+  box-shadow: 0 0 35px #ffb72d30;
+}
+
+.diyas {
+  position: absolute;
+  bottom: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-size: 28px;
+}
+
+.diya {
+  cursor: pointer;
+  filter: grayscale(1) brightness(0.4);
+  transition: 0.3s;
+  user-select: none;
+}
+
+.diya.lit {
+  filter: none;
+  transform: scale(1.25);
+  text-shadow: 0 0 20px #ffb72d;
+}
+
+.controls {
+  text-align: center;
+  padding: 10px 20px 30px;
+}
+
+button {
+  border: 0;
+  border-radius: 30px;
+  padding: 13px 22px;
+  margin: 5px;
+  color: #24132d;
+  background: linear-gradient(135deg, #ffe77a, #ffad42);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 5px 20px #ffad4230;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+#message {
+  min-height: 50px;
+  color: #ffd76a;
+  font-size: 17px;
+  margin: 15px 0;
+}
+
+#fireworks {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+footer {
+  text-align: center;
+  color: #9f8bb8;
+  font-size: 12px;
+  padding: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<header>
+  <div>✨ FESTIVAL OF LIGHTS ✨</div>
+  <h1>DiwaliVerse</h1>
+  <p class="subtitle">Bring the Light Back to the City</p>
+</header>
+
+<div class="stats">
+  <div class="stat">
+    <strong id="score">0</strong>
+    Diyas Lit
+  </div>
+  <div class="stat">
+    <strong id="percent">0%</strong>
+    City Glow
+  </div>
+</div>
+
+<div class="progress">
+  <div id="bar"></div>
+</div>
+
+<div class="city">
+  <div class="stars"></div>
+  <div class="moon">🌙</div>
+
+  <div class="houses">
+    <div class="house" id="house1">
+      <div class="roof"></div>
+      <div class="windows">
+        <div class="window"></div>
+        <div class="window"></div>
+        <div class="window"></div>
+        <div class="window"></div>
+      </div>
+    </div>
+
+    <div class="house" id="house2">
+      <div class="roof"></div>
+      <div class="windows">
+        <div class="window"></div>
+        <div class="window"></div>
+        <div class="window"></div>
+        <div class="window"></div>
+      </div>
+    </div>
+
+    <div class="house" id="house3">
+      <div class="roof"></div>
+      <div class="windows">
+        <div class="window"></div>
+        <div class="window"></div>
+        <div class="window"></div>
+        <div class="window"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diyas">
+    <span class="diya" data-id="0">🪔</span>
+    <span class="diya" data-id="1">🪔</span>
+    <span class="diya" data-id="2">🪔</span>
+    <span class="diya" data-id="3">🪔</span>
+    <span class="diya" data-id="4">🪔</span>
+    <span class="diya" data-id="5">🪔</span>
+  </div>
+</div>
+
+<div class="controls">
+  <p>Tap every diya and bring the city to life!</p>
+  <div id="message">The city is waiting for your light...</div>
+  <button onclick="celebrate()">🎆 Celebrate Diwali</button>
+  <button onclick="resetGame()">↻ Restart</button>
+</div>
+
+<footer>
+  Made with ❤️ and light · DiwaliVerse
+</footer>
+
+<script>
+const diyas = document.querySelectorAll(".diya");
+const score = document.getElementById("score");
+const percent = document.getElementById("percent");
+const bar = document.getElementById("bar");
+const message = document.getElementById("message");
+
+let lit = 0;
+let finished = false;
+
+diyas.forEach(diya => {
+  diya.addEventListener("click", () => {
+    if (diya.classList.contains("lit")) return;
+
+    diya.classList.add("lit");
+    lit++;
+
+    score.textContent = lit;
+    const progress = Math.round((lit / diyas.length) * 100);
+
+    percent.textContent = progress + "%";
+    bar.style.width = progress + "%";
+
+    if (lit === 2) {
+      message.textContent = "The first lights are glowing! ✨";
+    } else if (lit === 4) {
+      message.textContent = "The city is coming alive! 🌟";
+    } else if (lit === 6) {
+      message.textContent = "You brought the light back! 🪔";
+      document.querySelectorAll(".house")
+        .forEach(house => house.classList.add("lit"));
+
+      finished = true;
+      celebrate();
+    }
+  });
+});
+
+function resetGame() {
+  lit = 0;
+  finished = false;
+
+  diyas.forEach(diya => diya.classList.remove("lit"));
+  document.querySelectorAll(".house")
+    .forEach(house => house.classList.remove("lit"));
+
+  score.textContent = "0";
+  percent.textContent = "0%";
+  bar.style.width = "0%";
+  message.textContent = "The city is waiting for your light...";
+}
+
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+window.addEventListener("resize", resize);
+resize();
+
+function burst(x, y) {
+  for (let i = 0; i < 70; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 5 + 1;
+
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 70,
+      color: ["#ffd76a", "#ff6f91", "#a78bfa", "#5eead4"]
+        [Math.floor(Math.random() * 4)]
+    });
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  particles = particles.filter(p => p.life > 0);
+
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.04;
+    p.life--;
+
+    ctx.globalAlpha = p.life / 70;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+function celebrate() {
+  if (lit === 0) {
+    message.textContent = "Light at least one diya first! 🪔";
+    return;
+  }
+
+  if (lit === 6) {
+    message.textContent =
+      "Happy Diwali! You have illuminated the entire city! ✨";
+  } else {
+    message.textContent = "Happy Diwali! Let the celebrations begin! 🎆";
+  }
+
+  for (let i = 0; i < 8; i++) {
+    setTimeout(() => {
+      burst(
+        Math.random() * canvas.width,
+        Math.random() * canvas.height * 0.65
+      );
+    }, i * 250);
+  }
+}
+</script>
+
+</body>
+</html>
